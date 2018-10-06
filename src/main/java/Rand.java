@@ -5,7 +5,8 @@ public class Rand {
         Random random = new Random();
         return min + random.nextInt(max - min + 1);
     }
-    public static String RandomItem(String[] array){
+
+    static String RandomItem(String[] array) {
         Random random = new Random();
         return array[random.nextInt(array.length)];
     }
