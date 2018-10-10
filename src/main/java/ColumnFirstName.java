@@ -1,18 +1,13 @@
-public class NameColumn {
-    private String name;
+public class ColumnFirstName extends AbstractColumnGender {
     private static String[] namesMale;
     private static String[] namesFemale;
 
-    NameColumn(Gender gender) {
-        init();
-        if (gender == Gender.MALE) {
-            name = Rand.RandomItem(namesMale);
-        } else {
-            name = Rand.RandomItem(namesFemale);
-        }
+    ColumnFirstName(Gender gender) {
+        super(gender);
     }
 
-    private static void init() {
+    @Override
+    protected void init() {
         if (namesMale == null || namesFemale == null) {
             String namesMaleFile = "FirstNameMale.txt";
             String namesFemaleFile = "FirstNameFemale.txt";
@@ -21,7 +16,9 @@ public class NameColumn {
         }
     }
 
-    public String getName() {
-        return name;
+    @Override
+    protected String generateValue(Gender gender) {
+        return (String) Rand.randomItem(gender == Gender.MALE ? namesMale : namesFemale);
     }
+
 }
