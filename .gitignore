@@ -5,3 +5,5 @@ TFS_QA_Homework3\.iml
 out/
 
 target/
+
+*\.xlsx
