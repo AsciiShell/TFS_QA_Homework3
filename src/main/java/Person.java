@@ -1,63 +1,64 @@
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Row;
-
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
-public class Person {
-    public ColumnFirstName firstName;
-    public ColumnSecondName secondName;
-    public ColumnPatronymicName patronymicName;
-    public ColumnGender gender;
-    public ColumnBirthDate birthDate;
-    public ColumnRuTIN ruTIN;
-    public ColumnZIP zip;
-    public ColumnCountry country;
-    public ColumnRegion region;
-    public ColumnCity city;
-    public ColumnStreet street;
-    public ColumnHouse house;
-    public ColumnFlat flat;
+public final class Person {
+    private final String firstName;
+    private final String secondName;
+    private final String patronymicName;
+    private final Gender gender;
+    private final Date birthDate;
+    private final String ruTIN;
+    private final Address address;
 
-    private Date now;
-
-    Person() {
-        Gender gender = Rand.randomGender();
-        firstName = new ColumnFirstName(gender);
-        secondName = new ColumnSecondName(gender);
-        patronymicName = new ColumnPatronymicName(gender);
-        this.gender = new ColumnGender(gender);
-        birthDate = new ColumnBirthDate();
-        ruTIN = new ColumnRuTIN();
-        zip = new ColumnZIP();
-        country = new ColumnCountry();
-        region = new ColumnRegion();
-        city = new ColumnCity();
-        street = new ColumnStreet();
-        house = new ColumnHouse();
-        flat = new ColumnFlat();
-        now = new Date();
+    public Person(String firstName, String secondName, String patronymicName, Gender gender, Date birthDate, String ruTIN, Address address) {
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.patronymicName = patronymicName;
+        this.gender = gender;
+        this.birthDate = birthDate;
+        this.ruTIN = ruTIN;
+        this.address = address;
     }
 
     int getAge() {
-        int year = now.getYear() - 70;
-        return year + (int) (birthDate.getDate().getTime() / (1471228928));
+        Locale local = new Locale("ru", "RU");
+        Calendar a = Calendar.getInstance(local);
+        a.setTime(this.birthDate);
+        Calendar b = Calendar.getInstance(local);
+        b.setTime(new Date());
+        int diff = b.get(Calendar.YEAR) - a.get(Calendar.YEAR);
+        if (a.get(Calendar.DAY_OF_YEAR) > b.get(Calendar.DAY_OF_YEAR)) {
+            diff--;
+        }
+        return diff;
     }
 
-    void fillLine(Row row, CellStyle dateStyle) {
-        row.createCell(1).setCellValue(firstName.toString());
-        row.createCell(2).setCellValue(secondName.toString());
-        row.createCell(3).setCellValue(patronymicName.toString());
-        row.createCell(4).setCellValue(this.getAge());
-        row.createCell(5).setCellValue(this.gender.toString());
-        row.createCell(6).setCellValue(birthDate.getDate());
-        row.getCell(6).setCellStyle(dateStyle);
-        row.createCell(7).setCellValue(ruTIN.toString());
-        row.createCell(8).setCellValue(zip.toString());
-        row.createCell(9).setCellValue(country.toString());
-        row.createCell(10).setCellValue(region.toString());
-        row.createCell(11).setCellValue(city.toString());
-        row.createCell(12).setCellValue(street.toString());
-        row.createCell(13).setCellValue(house.getValue());
-        row.createCell(14).setCellValue(flat.getValue());
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getSecondName() {
+        return secondName;
+    }
+
+    public String getPatronymicName() {
+        return patronymicName;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public Date getBirthDate(){
+        return birthDate;
+    }
+
+    public String getRuTIN() {
+        return ruTIN;
+    }
+
+    public Address getAddress() {
+        return address;
     }
 }
