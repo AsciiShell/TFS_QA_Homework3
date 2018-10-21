@@ -1,15 +1,21 @@
+import io.github.openunirest.http.exceptions.UnirestException;
+
 import java.io.File;
-import java.io.IOException;
 
 public class DataSetGenerator {
-    public static void main(String[] args) throws IOException {
-        String filename = "test.xlsx";
-        DataStorageExcel storageExcel = new DataStorageExcel(filename);
-        int items = Rand.randomInt(1, 30);
-        for (int i = 0; i < items; i++) {
-            storageExcel.appendRow(new Person());
+    public static void main(String[] args) {
+        int count = Rand.randomInt(1, 30);
+        DataStorageExcel storage = new DataStorageExcel();
+        String filename = new File("test.xlsx").getAbsolutePath();
+        try {
+            storage.extend(new DataStorageAPI().getList(count));
+            if (storage.save(filename)) {
+                System.out.println("Файл создан. Путь: " + filename);
+            } else {
+                System.out.println("Не удалось записать данные в файл");
+            }
+        } catch (UnirestException e) {
+            System.out.println("Не удалось выполнить запрос к API");
         }
-        storageExcel.saveToFile();
-        System.out.println("Файл создан. Путь: " + new File(filename).getCanonicalPath());
     }
 }

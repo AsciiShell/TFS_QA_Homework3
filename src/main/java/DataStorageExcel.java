@@ -3,58 +3,30 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
-public class DataStorageExcel implements IDataStorage {
-    private List<Person> persons;
-    private String filename;
-
-    DataStorageExcel(String filename) {
-        this.filename = filename;
-        persons = new ArrayList<Person>();
-    }
-
-    public void appendRow(Person person) {
-        persons.add(person);
-    }
-
-    public void saveToFile() {
+public class DataStorageExcel extends ADataStorage implements IDataSave {
+    @Override
+    public boolean save(String filename) {
         Workbook book = new XSSFWorkbook();
         Sheet sheet = book.createSheet("Люди");
         Row row = sheet.createRow(0);
         {
-            Cell header = row.createCell(0);
-            header.setCellValue("№");
-            header = row.createCell(1);
-            header.setCellValue("Имя");
-            header = row.createCell(2);
-            header.setCellValue("Фамилия");
-            header = row.createCell(3);
-            header.setCellValue("Отчество");
-            header = row.createCell(4);
-            header.setCellValue("Возраст");
-            header = row.createCell(5);
-            header.setCellValue("Пол");
-            header = row.createCell(6);
-            header.setCellValue("Дата рождения");
-            header = row.createCell(7);
-            header.setCellValue("ИНН");
-            header = row.createCell(8);
-            header.setCellValue("Почтовый индекс");
-            header = row.createCell(9);
-            header.setCellValue("Страна");
-            header = row.createCell(10);
-            header.setCellValue("Область");
-            header = row.createCell(11);
-            header.setCellValue("Город");
-            header = row.createCell(12);
-            header.setCellValue("Улица");
-            header = row.createCell(13);
-            header.setCellValue("Дом");
-            header = row.createCell(14);
-            header.setCellValue("Квартира");
+            row.createCell(0).setCellValue("№");
+            row.createCell(1).setCellValue("Имя");
+            row.createCell(2).setCellValue("Фамилия");
+            row.createCell(3).setCellValue("Отчество");
+            row.createCell(4).setCellValue("Возраст");
+            row.createCell(5).setCellValue("Пол");
+            row.createCell(6).setCellValue("Дата рождения");
+            row.createCell(7).setCellValue("ИНН");
+            row.createCell(8).setCellValue("Почтовый индекс");
+            row.createCell(9).setCellValue("Страна");
+            row.createCell(10).setCellValue("Область");
+            row.createCell(11).setCellValue("Город");
+            row.createCell(12).setCellValue("Улица");
+            row.createCell(13).setCellValue("Дом");
+            row.createCell(14).setCellValue("Квартира");
         }
         DataFormat format = book.createDataFormat();
         CellStyle dateStyle = book.createCellStyle();
@@ -65,14 +37,29 @@ public class DataStorageExcel implements IDataStorage {
             Person item = p.next();
             row = sheet.createRow(i);
             row.createCell(0).setCellValue(i);
-            item.fillLine(row, dateStyle);
+            row.createCell(1).setCellValue(item.getFirstName());
+            row.createCell(2).setCellValue(item.getSecondName());
+            row.createCell(3).setCellValue(item.getPatronymicName());
+            row.createCell(4).setCellValue(item.getAge());
+            row.createCell(5).setCellValue(item.getGender().toString());
+            row.createCell(6).setCellValue(item.getBirthDate());
+            row.getCell(6).setCellStyle(dateStyle);
+            row.createCell(7).setCellValue(item.getRuTIN());
+            row.createCell(8).setCellValue(item.getAddress().getZip());
+            row.createCell(9).setCellValue(item.getAddress().getCountry());
+            row.createCell(10).setCellValue(item.getAddress().getRegion());
+            row.createCell(11).setCellValue(item.getAddress().getCity());
+            row.createCell(12).setCellValue(item.getAddress().getStreet());
+            row.createCell(13).setCellValue(item.getAddress().getHouse());
+            row.createCell(14).setCellValue(item.getAddress().getFlat());
         }
 
         try {
             book.write(new FileOutputStream(filename));
             book.close();
+            return true;
         } catch (IOException e) {
-            e.printStackTrace();
+            return false;
         }
     }
 }
