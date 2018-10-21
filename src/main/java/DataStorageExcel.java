@@ -7,7 +7,7 @@ import java.util.Iterator;
 
 public class DataStorageExcel extends ADataStorage implements IDataSave {
     @Override
-    public void save(String filename) {
+    public boolean save(String filename) {
         Workbook book = new XSSFWorkbook();
         Sheet sheet = book.createSheet("Люди");
         Row row = sheet.createRow(0);
@@ -57,8 +57,9 @@ public class DataStorageExcel extends ADataStorage implements IDataSave {
         try {
             book.write(new FileOutputStream(filename));
             book.close();
+            return true;
         } catch (IOException e) {
-            e.printStackTrace();
+            return false;
         }
     }
 }

@@ -1,3 +1,3 @@
 public interface IDataSave {
-    public void save(String target);
+    public boolean save(String target);
 }

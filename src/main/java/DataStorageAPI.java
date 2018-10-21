@@ -25,14 +25,10 @@ public class DataStorageAPI extends ADataStorage implements IDataGet {
                         .queryString("key", "OSKM-NK2B-13FR-NW03")
                         .queryString("count", count)
                         .asString();
-        if (response.getStatus() == 200) {
-            String str = response.getBody();
-            persons = gson.fromJson(str, type);
-            return persons;
-        } else {
-            System.out.println("No Internet");
-            return null;
-        }
+
+        String str = response.getBody();
+        persons = gson.fromJson(str, type);
+        return persons;
 
     }
 }
