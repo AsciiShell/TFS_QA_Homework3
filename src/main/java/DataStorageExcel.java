@@ -3,12 +3,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
-public class DataStorageExcel extends ADataStorage {
-    public void saveToFile(String filename) {
+public class DataStorageExcel extends ADataStorage implements IDataSave {
+    @Override
+    public void save(String filename) {
         Workbook book = new XSSFWorkbook();
         Sheet sheet = book.createSheet("Люди");
         Row row = sheet.createRow(0);

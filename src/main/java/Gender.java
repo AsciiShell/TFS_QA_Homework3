@@ -9,4 +9,15 @@ public enum Gender {
          return "Ж";
      }
     }
+
+    public static Gender fromInteger(int x) {
+        switch (x) {
+            case 0:
+                return MALE;
+            case 1:
+                return FEMALE;
+            default:
+                return null;
+        }
+    }
 }
