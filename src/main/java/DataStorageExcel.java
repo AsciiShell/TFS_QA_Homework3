@@ -5,8 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
 
-public class DataStorageExcel extends ADataStorage implements IDataSave {
-    @Override
+public class DataStorageExcel extends ADataStorage {
     public boolean save(String filename) {
         Workbook book = new XSSFWorkbook();
         Sheet sheet = book.createSheet("Люди");
